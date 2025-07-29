@@ -67,7 +67,7 @@ window.onload = function () {
             subject: "",
             message: ""
         }
-        let method = "POST"; // กำหนด Method ที่จะส่ง
+        let method = "GET"; // กำหนด Method ที่จะส่ง
         let URL = "https://script.google.com/macros/s/AKfycbxE6suxB-Rtax1hurILufYl0Gulxo7jnBrhZ7Fq4xbh0zxjcW7hGa_7C7bfk8O7oDJl/exec"; // URL Server google app script API
 
         inpiut_form_contact_us.forEach(input => {
@@ -82,6 +82,8 @@ window.onload = function () {
             obj_contack.yourEmail = inpiut_form_contact_us[1].value;
             obj_contack.subject = inpiut_form_contact_us[2].value;
             obj_contack.message = inpiut_form_contact_us[3].value;
+
+            URL += "?" + new URLSearchParams(obj_contack).toString();
 
             const block_Spinner = document.querySelector(".block-Spinner");
             const box_alert = document.querySelector('.box-alert');
@@ -117,7 +119,7 @@ window.onload = function () {
                 }, 3000);
             };
 
-            xhr.send(JSON.stringify(obj_contack));
+            xhr.send();
         } else {
             window.alert("กรุณากรอกข้อมูลในฟอร์มให้ครบ");
         }
