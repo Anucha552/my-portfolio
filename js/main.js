@@ -93,7 +93,6 @@ window.onload = function () {
 
             let xhr = new XMLHttpRequest();
             xhr.open(method, URL, true);
-            xhr.setRequestHeader("Content-Type", "application/json");
 
             xhr.onreadystatechange = function () {
                 setTimeout(function () {
