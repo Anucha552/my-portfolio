@@ -54,74 +54,54 @@ window.onload = function () {
 
     // start form
 
-    const submit_contack = document.querySelector("#submit-contack");
+    const submit_contack = document.getElementById('submit-contack');
+    const input_form_contact_us = document.getElementsByClassName('input-form-contact-us');
+    const block_Spinner = document.getElementsByClassName('block-Spinner')[0];
+    const box_alert = document.getElementsByClassName('box-alert')[0];
+    const service_ID = 'service_o52q39p'; // service ID ต้องเปลี่ยนเป็นของตัวเอง
+    const template__ID = 'template_df0zu02'; // template ID ต้องเปลี่ยนเป็นของตัวเอง
 
-    submit_contack.addEventListener('click', function (e) {
-        const inpiut_form_contact_us = document.querySelectorAll(".inpiut-form-contact-us");
+    function sendEmail(serviceID, templateID, dataForm) {
+        emailjs.send(serviceID, templateID, dataForm)
+            .then(function (response) {
+                box_alert.innerHTML = '<div class="text-successfully">ทำการบันทึกข้อมูลของท่านเรียบร้อย</div>'
+                setTimeout(function () {
+                    block_Spinner.classList.add('d-none');
+                    for (let i = 0; i < input_form_contact_us.length; i++) {
+                        input_form_contact_us[i].value = "";
+                    }
+                }, 2000);
+            }, function (error) {
+                alert("ส่งข้อมูลฟอร์มไม่สำเร็จ: " + error);
+            });
+    }
+
+    submit_contack.addEventListener('click', function () {
+
         let send = true;
-        let toDate = new Date();
-        let obj_contack = {
-            dateTime: toDate.getDate() + "/" + (toDate.getMonth() + 1) + "/" + toDate.getFullYear(),
-            yourName: "",
-            yourEmail: "",
-            subject: "",
-            message: ""
-        }
-        let method = "GET"; // กำหนด Method ที่จะส่ง
-        let URL = "https://script.google.com/macros/s/AKfycbxE6suxB-Rtax1hurILufYl0Gulxo7jnBrhZ7Fq4xbh0zxjcW7hGa_7C7bfk8O7oDJl/exec"; // URL Server google app script API
 
-        inpiut_form_contact_us.forEach(input => {
-            if (input.value == "") {
+        for (let i = 0; i < input_form_contact_us.length; i++) {
+            if (!input_form_contact_us[i].value.trim()) {
                 send = false;
             }
-        })
-
-        // send contack API App script
-        if (send) {
-            obj_contack.yourName = inpiut_form_contact_us[0].value
-            obj_contack.yourEmail = inpiut_form_contact_us[1].value;
-            obj_contack.subject = inpiut_form_contact_us[2].value;
-            obj_contack.message = inpiut_form_contact_us[3].value;
-
-            URL += "?" + new URLSearchParams(obj_contack).toString();
-
-            const block_Spinner = document.querySelector(".block-Spinner");
-            const box_alert = document.querySelector('.box-alert');
-
-            block_Spinner.classList.remove("d-none");
-            box_alert.innerHTML = '<div class="spinner-border text-info"></div>';
-
-            let xhr = new XMLHttpRequest();
-            xhr.open(method, URL, true);
-
-            xhr.onreadystatechange = function () {
-                setTimeout(function () {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        let return_data_API = this.responseText;
-                        console.log(return_data_API); // รอ server api กลับ
-                        box_alert.innerHTML = '<div class="text"><span class="twxt-successfully">ส่งแบบฟอร์มแล้ว</span></div>';
-                        setTimeout(function () {
-                            block_Spinner.classList.add("d-none");
-                            for (let i = 0; i < inpiut_form_contact_us.length; i++) {
-                                inpiut_form_contact_us[i].value = "";
-                            }
-                        }, 2000);
-                    } else {
-                        box_alert.innerHTML = '<div class="text"><span class="twxt-successfully">ส่งแบบฟอร์มไม่สำเร็จ</span></div>';
-                        setTimeout(function () {
-                            block_Spinner.classList.add("d-none");
-                            for (let i = 0; i < inpiut_form_contact_us.length; i++) {
-                                inpiut_form_contact_us[i].value = "";
-                            }
-                        }, 2000);
-                    }
-                }, 3000);
-            };
-
-            xhr.send();
-        } else {
-            window.alert("กรุณากรอกข้อมูลในฟอร์มให้ครบ");
         }
+
+        if (send) {
+
+            block_Spinner.classList.remove('d-none');
+            box_alert.innerHTML = '<div class="spinner-border text-info spinner-border"></div>';
+
+            sendEmail(service_ID, template__ID, {
+                "dateTime": new Date().toLocaleDateString('th-TH'),
+                "yourName": input_form_contact_us[0].value,
+                "yourEmail": input_form_contact_us[1].value,
+                "subject": input_form_contact_us[2].value,
+                "message": input_form_contact_us[3].value
+            });
+        } else {
+            alert('กรุณากรอกข้อมูลให้ครบ');
+        }
+
     });
     // end form
 }
