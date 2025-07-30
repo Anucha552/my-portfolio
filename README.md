@@ -9,5 +9,5 @@
 
 ## เทคโนโลยีที่ใช้
 
-- HTML5 / CSS3 / JavaScript (Vanilla)
+- HTML5 / CSS3 / JavaScript
 - CSS Framework เช่น Bootstrap 5 
