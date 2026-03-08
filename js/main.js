@@ -2,7 +2,7 @@
 window.onload = function () {
 
     // start hero
-    const titles = ["Web Development", "Back-end"];
+    const titles = ["Full Stack Web Developer", "Back-Backend & Framework Developer"];
     let index = 0;
     let charIndex = 0;
     let typingElement = document.querySelector('.typing');
@@ -104,4 +104,17 @@ window.onload = function () {
 
     });
     // end form
+
+    // ปิดหน้าต่างแสดงผลเมื่อคลิกลิงก์นำทางบนมือถือ
+    const offcanvasEl = document.getElementById('offcanvasSidebar');
+    if (offcanvasEl) {
+        const bsOffcanvas = bootstrap.Offcanvas.getOrCreateInstance(offcanvasEl);
+        const offcanvasLinks = offcanvasEl.querySelectorAll('.offcanvas-body .nav a.nav-link');
+        offcanvasLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                bsOffcanvas.hide();
+            });
+        });
+    }
+
 }
